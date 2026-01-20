@@ -42,6 +42,16 @@
 		icon: 'OrderedListOutlined',
 		component: './TodoList',
 	},
+	{
+		path: '/table',
+		name: 'Table',
+		component: './TableComponent',
+	},
+	{
+		path: '/table2',
+		name: 'Table 2',
+		component: './Table2',
+	},
 
 	// DANH MUC HE THONG
 	// {
