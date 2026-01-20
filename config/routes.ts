@@ -43,15 +43,11 @@
 		component: './TodoList',
 	},
 	{
-		path: '/table',
-		name: 'Table',
-		component: './TableComponent',
+		path: '/bang-san-pham',
+		name: 'Bảng sản phẩm',
+		component: './BangSanPham',
 	},
-	{
-		path: '/table2',
-		name: 'Table 2',
-		component: './Table2',
-	},
+	
 
 	// DANH MUC HE THONG
 	// {
