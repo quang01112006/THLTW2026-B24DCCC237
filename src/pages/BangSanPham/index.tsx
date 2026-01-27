@@ -7,6 +7,7 @@ import { useState } from 'react';
 export default function BangSanPham() {
 	const { listSanPham, handleDelete, handleAdd, searchList, searchText, setSearchText } = useModel('sanpham');
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [record, setRecord] = useState(null);
 	const columns: any[] = [
 		{
 			title: 'STT',
@@ -23,15 +24,22 @@ export default function BangSanPham() {
 			title: 'Giá',
 			dataIndex: 'price',
 			align: 'center',
-			render: (val, record) => `${val.toLocaleString()} VND`,
+			render: (val: any, record: any) => `${val.toLocaleString()} VND`,
 		},
 		{
 			title: 'Thao tác',
 			align: 'center',
-			render: (val, record) => (
+			render: (val: any, record: any) => (
 				<Space>
 					{console.log(val)}
-					<Button icon={<EditOutlined />}>Sửa</Button>
+					<Button
+						icon={<EditOutlined />}
+						onClick={() => {
+							setRecord(record), setIsModalOpen(true);
+						}}
+					>
+						Sửa
+					</Button>
 					<Popconfirm title='Xóa sản phẩm này?' onConfirm={() => handleDelete(record.id)}>
 						<Button icon={<DeleteOutlined />} danger>
 							Xóa
@@ -45,7 +53,12 @@ export default function BangSanPham() {
 		<Card title='Quản lý sản phẩm'>
 			<Space style={{ marginBottom: 10, display: 'flex', justifyContent: 'space-between' }}>
 				<div style={{ display: 'flex', gap: 10 }}>
-					<Button type='primary' onClick={() => setIsModalOpen(true)}>
+					<Button
+						type='primary'
+						onClick={() => {
+							setRecord(null), setIsModalOpen(true);
+						}}
+					>
 						Thêm sản phẩm
 					</Button>
 					<Input.Search
@@ -61,7 +74,7 @@ export default function BangSanPham() {
 				</div>
 			</Space>
 			<Table columns={columns} dataSource={searchList}></Table>
-			<FormSanPhan isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}></FormSanPhan>
+			<FormSanPhan isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} record={record}></FormSanPhan>
 		</Card>
 	);
 }
