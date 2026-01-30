@@ -47,7 +47,11 @@
 		name: 'Bảng sản phẩm',
 		component: './BangSanPham',
 	},
-	
+	{
+		path: '/don-hang',
+		name: 'Đơn hàng',
+		component: './BangDonHang',
+	},
 
 	// DANH MUC HE THONG
 	// {
