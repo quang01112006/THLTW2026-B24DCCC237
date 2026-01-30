@@ -1,4 +1,6 @@
-import { Form, Input, InputNumber, Modal } from 'antd';
+import { DanhMucSanPham } from '@/services/SanPham/constants';
+import rules from '@/utils/rules';
+import { Form, Input, InputNumber, Modal, Select } from 'antd';
 import { useEffect } from 'react';
 import { useModel } from 'umi';
 
@@ -25,28 +27,21 @@ export default function FormSanPhan({ isModalOpen, setIsModalOpen, record }) {
 	return (
 		<Modal title='Thêm sản phẩm mới' visible={isModalOpen} onCancel={() => setIsModalOpen(false)} onOk={onOk}>
 			<Form form={form} layout='vertical'>
-				<Form.Item name='name' label='Tên sản phẩm' rules={[{ required: true, message: 'Cần nhập tên sản phẩm' }]}>
+				<Form.Item name='name' label='Tên sản phẩm' rules={[...rules.required]}>
 					<Input placeholder='Nhập tên sản phẩm...' />
+				</Form.Item>
+				<Form.Item name='category' label='Danh mục' rules={[...rules.required]}>
+					<Select options={DanhMucSanPham} placeholder='Chọn danh mục ' />
 				</Form.Item>
 				<Form.Item
 					name='quantity'
 					label='Số lượng sản phẩm'
-					rules={[
-						{ required: true, message: 'Cần nhập số lượng sản phẩm' },
-						{ type: 'number', min: 1, message: 'Số lượng cần lớn hơn 0' },
-					]}
+					rules={[...rules.required, ...rules.number(999999, 0, false)]}
 				>
 					<InputNumber style={{ width: '100%' }} placeholder='Nhập số lượng sản phẩm...' />
 				</Form.Item>
-				<Form.Item
-					name='price'
-					label='Giá sản phẩm'
-					rules={[
-						{ required: true, message: 'Cần nhập giá sản phẩm' },
-						{ type: 'number', min: 1, message: 'Giá cần lớn hơn 0' },
-					]}
-				>
-					<InputNumber style={{ width: '100%' }} placeholder='Nhập số lượng sản phẩm...' />
+				<Form.Item name='price' label='Giá sản phẩm' rules={[...rules.required, ...rules.float(9999999999, 0, 0)]}>
+					<InputNumber style={{ width: '100%' }} placeholder='Nhập giá sản phẩm...' />
 				</Form.Item>
 			</Form>
 		</Modal>
