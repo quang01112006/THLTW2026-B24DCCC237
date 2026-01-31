@@ -21,7 +21,7 @@
 	{
 		path: '/dashboard',
 		name: 'Dashboard',
-		component: './TrangChu',
+		component: './Dashboard',
 		icon: 'HomeOutlined',
 	},
 	{
@@ -30,18 +30,18 @@
 		component: './TienIch/GioiThieu',
 		hideInMenu: true,
 	},
-	{
-		path: '/random-user',
-		name: 'RandomUser',
-		component: './RandomUser',
-		icon: 'ArrowsAltOutlined',
-	},
-	{
-		path: '/todo-list',
-		name: 'TodoList',
-		icon: 'OrderedListOutlined',
-		component: './TodoList',
-	},
+	// {
+	// 	path: '/random-user',
+	// 	name: 'RandomUser',
+	// 	component: './RandomUser',
+	// 	icon: 'ArrowsAltOutlined',
+	// },
+	// {
+	// 	path: '/todo-list',
+	// 	name: 'TodoList',
+	// 	icon: 'OrderedListOutlined',
+	// 	component: './TodoList',
+	// },
 	{
 		path: '/bang-san-pham',
 		name: 'Bảng sản phẩm',
