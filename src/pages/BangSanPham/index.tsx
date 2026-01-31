@@ -23,6 +23,7 @@ export default function BangSanPham() {
 			dataIndex: 'name',
 			align: 'center',
 			width: 200,
+			sorter: (a, b) => a.name.localeCompare(b.name),
 		},
 		{
 			title: 'Danh mục',
@@ -32,13 +33,20 @@ export default function BangSanPham() {
 			onFilter: (val, record) => record.category === val,
 			width: 150,
 		},
-		{ title: 'Số Lượng', dataIndex: 'quantity', align: 'center', width: 100 },
+		{
+			title: 'Số Lượng',
+			dataIndex: 'quantity',
+			align: 'center',
+			width: 100,
+			sorter: (a, b) => a.quantity - b.quantity,
+		},
 		{
 			title: 'Giá',
 			dataIndex: 'price',
 			align: 'center',
 			render: (val, record) => `${val.toLocaleString()} VND`,
 			width: 150,
+			sorter: (a, b) => a.price - b.price,
 		},
 		{
 			title: 'Trạng thái',

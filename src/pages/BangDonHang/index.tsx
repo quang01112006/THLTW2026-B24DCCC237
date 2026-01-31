@@ -44,6 +44,7 @@ const BangDonHang = () => {
 			width: 100,
 			dataIndex: 'totalAmount',
 			align: 'center',
+			sorter: (a, b) => a.totalAmount - b.totalAmount,
 		},
 		{
 			title: 'Trạng thái',
