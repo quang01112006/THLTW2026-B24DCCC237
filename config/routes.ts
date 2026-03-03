@@ -42,17 +42,40 @@
 	// 	icon: 'OrderedListOutlined',
 	// 	component: './TodoList',
 	// },
+	// {
+	// 	path: '/bang-san-pham',
+	// 	name: 'Bảng sản phẩm',
+	// 	component: './BangSanPham',
+	// },
+	// {
+	// 	path: '/don-hang',
+	// 	name: 'Đơn hàng',
+	// 	component: './BangDonHang',
+	// },
+	// {
+	// 	path: '/learn-form-list',
+	// 	name: 'Form list',
+	// 	component: './Test',
+	// },
+	// {
+	// 	path:'/books',
+	// 	name:'Manage books',
+	// 	component:'./Books'
+	// },
 	{
-		path: '/bang-san-pham',
-		name: 'Bảng sản phẩm',
-		component: './BangSanPham',
+		path: '/bai-1',
+		name: 'Bài 1 - TH1',
+		component: './Bai1',
 	},
 	{
-		path: '/don-hang',
-		name: 'Đơn hàng',
-		component: './BangDonHang',
+		path: '/bai-2',
+		name: 'Bài 2 - TH1',
+		routes: [
+			{ name: 'Quản lý môn học', path: 'bai-2/mon-hoc', component: './QuanLyMonHoc', exact: true },
+			{ name: 'Tiến độ học tập', path: 'bai-2/tien-do-hoc-tap', component: './TienDoHocTap', exact: true },
+			// { name: 'Mục tiêu học tập', path: 'bai-2/muc-tieu-hoc-tap', component: './MucTieuHocTap', exact: true },
+		],
 	},
-
 	// DANH MUC HE THONG
 	// {
 	// 	name: 'DanhMuc',
