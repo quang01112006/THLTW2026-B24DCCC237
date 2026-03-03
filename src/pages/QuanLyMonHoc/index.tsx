@@ -40,7 +40,7 @@ const QuanLyMonHoc = () => {
 			dataIndex: 'mucTieuHangThang',
 			align: 'center',
 			width: 120,
-			render: (val) => <b>{formatMinutes(val)} </b>,
+			render: (val) => <div>{formatMinutes(val)} </div>,
 		},
 		{
 			title: 'Tiến độ mục tiêu',
