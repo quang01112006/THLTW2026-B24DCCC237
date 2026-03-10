@@ -7,8 +7,8 @@ export default () => {
 		return saved
 			? JSON.parse(saved)
 			: [
-					{ id: 1, ten: 'Toán', mucTieuHangThang: 20 },
-					{ id: 2, ten: 'Lý', mucTieuHangThang: 60 },
+					{ id: 1, maMon: 'INT1306', ten: 'Lập trình Web', soTinChi: 3 },
+					{ id: 2, maMon: 'INT1332', ten: 'An toàn thông tin', soTinChi: 2 },
 			  ];
 	});
 
@@ -31,11 +31,7 @@ export default () => {
 	};
 
 	const editMonHoc = (id: number, newVal: any) => {
-		setMonHoc((prev) =>
-			prev.map((item) =>
-				item.id === id ? { ...newVal, id } : item,
-			),
-		);
+		setMonHoc((prev) => prev.map((item) => (item.id === id ? { ...newVal, id } : item)));
 		message.success('Cập nhật thành công');
 	};
 
@@ -43,6 +39,6 @@ export default () => {
 		monHoc,
 		addMonHoc,
 		delMonHoc,
-		editMonHoc,
+		editMonHoc,	
 	};
 };

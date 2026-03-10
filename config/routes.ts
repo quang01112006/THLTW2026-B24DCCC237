@@ -18,12 +18,12 @@
 
 	///////////////////////////////////
 	// DEFAULT MENU
-	{
-		path: '/dashboard',
-		name: 'Dashboard',
-		component: './Dashboard',
-		icon: 'HomeOutlined',
-	},
+	// {
+	// 	path: '/dashboard',
+	// 	name: 'Dashboard',
+	// 	component: './Dashboard',
+	// 	icon: 'HomeOutlined',
+	// },
 	{
 		path: '/gioi-thieu',
 		name: 'About',
@@ -64,16 +64,16 @@
 	// },
 	{
 		path: '/bai-1',
-		name: 'Bài 1 - TH1',
+		name: 'Oẳn tù tì',
 		component: './Bai1',
 	},
 	{
 		path: '/bai-2',
-		name: 'Bài 2 - TH1',
+		name: 'Ngân hàng câu hỏi',
 		routes: [
-			{ name: 'Quản lý môn học', path: 'bai-2/mon-hoc', component: './QuanLyMonHoc', exact: true },
-			{ name: 'Tiến độ học tập', path: 'bai-2/tien-do-hoc-tap', component: './TienDoHocTap', exact: true },
-			// { name: 'Mục tiêu học tập', path: 'bai-2/muc-tieu-hoc-tap', component: './MucTieuHocTap', exact: true },
+			{ name: 'Quản lý danh mục', path: 'danh-muc', component: './QuanLyDanhMuc', exact: true },
+			{ name: 'Quản lý câu hỏi', path: 'cau-hoi', component: './QuanLyCauHoi', exact: true },
+			{ name: 'Quản lý đề thi', path: 'de-thi', component: './QuanLyDeThi', exact: true },
 		],
 	},
 	// DANH MUC HE THONG

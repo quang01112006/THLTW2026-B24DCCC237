@@ -1,8 +1,8 @@
-module MonHoc {
+module KhoiKienThuc {
 	export interface Record {
 		id: number;
-		maMon: string; 
+		idMonHoc: number;
+		moTa?: string;
 		ten: string;
-		soTinChi: number;
 	}
 }
