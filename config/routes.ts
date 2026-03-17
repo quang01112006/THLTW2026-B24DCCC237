@@ -31,23 +31,17 @@
 		hideInMenu: true,
 	},
 	{
-		path: '/random-user',
-		name: 'RandomUser',
-		component: './RandomUser',
-		icon: 'ArrowsAltOutlined',
+		path: '/lich-hen',
+		name: 'Quản lý lịch hẹn',
+		icon: 'calendar',
+		component: './LichHen',
 	},
 	{
-		path: '/todo-list',
-		name: 'TodoList',
-		icon: 'OrderedListOutlined',
-		component: './TodoList',
+		path: '/nhan-vien-dich-vu',
+		name: 'Nhân viên & dịch vụ',
+		icon: 'setting',
+		component: './QuanLyHeThong',
 	},
-	{
-		path: '/bang-san-pham',
-		name: 'Bảng sản phẩm',
-		component: './BangSanPham',
-	},
-	
 
 	// DANH MUC HE THONG
 	// {
