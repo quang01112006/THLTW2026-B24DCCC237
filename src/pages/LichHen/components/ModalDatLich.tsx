@@ -22,10 +22,10 @@ const ModalDatLich = ({ visible, setVisible }: Props) => {
 		const dichVuChon = dsDichVu.find((dv) => dv.id === values.idDichVu);
 		const thoiGianPhut = dichVuChon?.thoiGianThucHien || 60;
 
-		const biTrung = checkTrungLich(values.idNhanVien, ngayHen, gioHen, thoiGianPhut);
+		const biTrung = checkTrungLich(values.idNhanVien, ngayHen, gioHen, thoiGianPhut, dsDichVu);
 
 		if (biTrung) {
-			message.error('Nhân viên này đang bận vào khung giờ đó! Chọn giờ khác đi.');
+			message.error('Nhân viên này đang bận. Vui lòng chọn nhân viên khác');
 			return;
 		}
 

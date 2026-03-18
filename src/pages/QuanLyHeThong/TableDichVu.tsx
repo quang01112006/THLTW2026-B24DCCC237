@@ -71,7 +71,7 @@ const TableDichVu = () => {
 
 	return (
 		<>
-			<div style={{ marginBottom: 16, textAlign: 'right' }}>
+			<div style={{ marginBottom: 16 }}>
 				<Button
 					type='primary'
 					icon={<PlusOutlined />}
