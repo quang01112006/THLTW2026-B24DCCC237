@@ -42,7 +42,11 @@
 		icon: 'setting',
 		component: './QuanLyHeThong',
 	},
-
+	{
+		path: '/danh-gia',
+		name: 'Đánh giá',
+		component: './DanhGia',
+	},
 	// DANH MUC HE THONG
 	// {
 	// 	name: 'DanhMuc',

@@ -27,12 +27,15 @@ module QuanLyDichVu {
 		thoiGianThucHien: number;
 		moTa?: string;
 	}
+
 	export interface DanhGia {
 		id: number;
 		idLichHen: number;
 		tenKhachHang: string;
+		idNhanVien: number;
 		soSao: number;
 		binhLuan: string;
-		ngayDanhGia: string;
+		ngayRating: string;
+		idDichVu: number;
 	}
 }

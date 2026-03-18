@@ -5,7 +5,20 @@ import moment from 'moment';
 export default () => {
 	const [dsLichHen, setDsLichHen] = useState<QuanLyDichVu.LichHen[]>(() => {
 		const saved = localStorage.getItem('dsLichHen_Master');
-		return saved ? JSON.parse(saved) : [];
+		return saved
+			? JSON.parse(saved)
+			: [
+					{
+						id: 1647612000000,
+						tenKhachHang: 'Nguyễn ABC',
+						soDienThoai: '0987654321',
+						ngayHen: '2026-03-18',
+						gioHen: '09:00',
+						idNhanVien: 1,
+						idDichVu: 1,
+						trangThai: 'HOAN_THANH',
+					},
+			  ];
 	});
 
 	useEffect(() => {
