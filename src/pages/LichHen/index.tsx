@@ -54,7 +54,7 @@ const LichHen = () => {
 		{
 			title: 'Trạng thái',
 			dataIndex: 'trangThai',
-			align: 'center' as const,
+			align: 'center',
 			render: (status: string) => {
 				const config = {
 					CHO_DUYET: { color: 'warning', text: 'Chờ duyệt' },
@@ -68,7 +68,7 @@ const LichHen = () => {
 		},
 		{
 			title: 'Thao tác',
-			align: 'right' as const,
+			align: 'center',
 			render: (_: any, record: any) => (
 				<Space>
 					{record.trangThai === 'CHO_DUYET' && (
