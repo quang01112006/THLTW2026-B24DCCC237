@@ -20,7 +20,7 @@ const PageDanhGia = () => {
 				<Col span={8}>
 					<Card bordered={false}>
 						<Statistic
-							title='Điểm hài lòng trung bình'
+							title='Overall rating'
 							value={diemTrungBinh}
 							prefix={<StarFilled style={{ color: '#fadb14' }} />}
 							suffix='/ 5.0'
