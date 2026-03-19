@@ -45,6 +45,7 @@
 	{
 		path: '/danh-gia',
 		name: 'Đánh giá',
+		icon: 'star',
 		component: './DanhGia',
 	},
 	// DANH MUC HE THONG
