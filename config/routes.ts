@@ -31,23 +31,38 @@
 		hideInMenu: true,
 	},
 	{
-		path: '/random-user',
-		name: 'RandomUser',
-		component: './RandomUser',
-		icon: 'ArrowsAltOutlined',
+		path: '/totnghiep',
+		name: 'Quản lý văn bằng',
+		icon: 'file',
+		routes: [
+			{
+				path: '/totnghiep/so-van-bang',
+				name: 'Sổ văn bằng',
+				component: './SoVanBang',
+			},
+			{
+				path: '/totnghiep/quyet-dinh',
+				name: 'Quyết định tốt nghiệp',
+				component: './QuyetDinh',
+			},
+			{
+				path: '/totnghiep/cau-hinh-bieu-mau',
+				name: 'Cấu hình biểu mẫu',
+				component: './CauHinhBieuMau',
+			},
+			{
+				path: '/totnghiep/danh-sach-van-bang',
+				name: 'Thông tin văn bằng',
+				component: './VanBang',
+			},
+		],
 	},
 	{
-		path: '/todo-list',
-		name: 'TodoList',
-		icon: 'OrderedListOutlined',
-		component: './TodoList',
+		path: '/tra-cuu',
+		name: 'Tra cứu văn bằng',
+		icon: 'search',
+		component: './TraCuu',
 	},
-	{
-		path: '/bang-san-pham',
-		name: 'Bảng sản phẩm',
-		component: './BangSanPham',
-	},
-	
 
 	// DANH MUC HE THONG
 	// {
