@@ -31,37 +31,28 @@
 		hideInMenu: true,
 	},
 	{
-		path: '/totnghiep',
-		name: 'Quản lý văn bằng',
-		icon: 'file',
-		routes: [
-			{
-				path: '/totnghiep/so-van-bang',
-				name: 'Sổ văn bằng',
-				component: './SoVanBang',
-			},
-			{
-				path: '/totnghiep/quyet-dinh',
-				name: 'Quyết định tốt nghiệp',
-				component: './QuyetDinh',
-			},
-			{
-				path: '/totnghiep/cau-hinh-bieu-mau',
-				name: 'Cấu hình biểu mẫu',
-				component: './CauHinhBieuMau',
-			},
-			{
-				path: '/totnghiep/danh-sach-van-bang',
-				name: 'Thông tin văn bằng',
-				component: './VanBang',
-			},
-		],
+		path: '/clb',
+		name: 'Quản lý Câu lạc bộ',
+		icon: 'team',
+		component: './CLB', // Trang danh sách CLB (Trang 1)
 	},
 	{
-		path: '/tra-cuu',
-		name: 'Tra cứu văn bằng',
-		icon: 'search',
-		component: './TraCuu',
+		path: '/don-dang-ky',
+		name: 'Đơn đăng ký thành viên',
+		icon: 'file-text',
+		component: './QuanLyDon', // Trang duyệt đơn (Trang 2)
+	},
+	{
+		path: '/thanh-vien',
+		name: 'Danh sách thành viên',
+		icon: 'usergroup-add',
+		component: './ThanhVien', // Trang chỉ hiện Approved (Trang 3)
+	},
+	{
+		path: '/thong-ke',
+		name: 'Báo cáo & Thống kê',
+		icon: 'pie-chart',
+		component: './ThongKe', // Trang biểu đồ (Trang 4)
 	},
 
 	// DANH MUC HE THONG
