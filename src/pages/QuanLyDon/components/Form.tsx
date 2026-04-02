@@ -4,7 +4,7 @@ import rules from '@/utils/rules';
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 
 interface IProps {
-	dsCLB: CLB.IRecord[]; // Truyền danh sách CLB để sinh viên chọn
+	dsCLB: CLB.IRecord[];
 	onSave: (values: CLB.IDonDangKi) => void;
 	loading?: boolean;
 }
@@ -19,11 +19,10 @@ const FormDangKi = (props: IProps) => {
 			form={form}
 			onFinish={(values) => {
 				onSave(values);
-				form.resetFields(); // Lưu xong thì xóa trắng form
+				form.resetFields();
 			}}
 		>
 			<Row gutter={16}>
-				{/* CỘT 1: THÔNG TIN CÁ NHÂN */}
 				<Col span={12}>
 					<Form.Item name='hoTen' label='Họ và tên' rules={[...rules.required]}>
 						<Input placeholder='Nhập họ tên sinh viên...' />
@@ -49,7 +48,6 @@ const FormDangKi = (props: IProps) => {
 					</Form.Item>
 				</Col>
 
-				{/* CỘT 2: THÔNG TIN ĐĂNG KÝ */}
 				<Col span={24}>
 					<Form.Item name='diaChi' label='Địa chỉ hiện tại' rules={[...rules.required]}>
 						<Input placeholder='Ký túc xá hoặc địa chỉ tạm trú...' />
