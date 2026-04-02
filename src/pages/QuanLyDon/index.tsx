@@ -177,6 +177,7 @@ const QuanLyDon = () => {
 			>
 				<FormDangKi
 					dsCLB={dsCLB}
+					setIsModalVisible={setIsModalVisible}
 					onSave={(v) => {
 						addDon(v);
 						setIsModalVisible(false);

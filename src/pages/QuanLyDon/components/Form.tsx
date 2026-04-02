@@ -1,16 +1,17 @@
 import { EGioiTinh } from '@/services/CLB/constants';
 import type { CLB } from '@/services/CLB/typing';
 import rules from '@/utils/rules';
-import { Button, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Col, Form, Input, Radio, Row, Select } from 'antd';
 
 interface IProps {
 	dsCLB: CLB.IRecord[];
 	onSave: (values: CLB.IDonDangKi) => void;
 	loading?: boolean;
+	setIsModalVisible: (v: boolean) => void;
 }
 
 const FormDangKi = (props: IProps) => {
-	const { dsCLB, onSave, loading } = props;
+	const { dsCLB, onSave, loading, setIsModalVisible } = props;
 	const [form] = Form.useForm();
 
 	return (
@@ -41,10 +42,12 @@ const FormDangKi = (props: IProps) => {
 				</Col>
 				<Col span={12}>
 					<Form.Item name='gioiTinh' label='Giới tính' rules={[...rules.required]}>
-						<Select placeholder='Chọn giới tính'>
-							<Select.Option value={EGioiTinh.NAM}>Nam</Select.Option>
-							<Select.Option value={EGioiTinh.NU}>Nữ</Select.Option>
-						</Select>
+						<Radio.Group
+							options={[
+								{ label: EGioiTinh.NAM, value: EGioiTinh.NAM },
+								{ label: EGioiTinh.NU, value: EGioiTinh.NU },
+							]}
+						/>
 					</Form.Item>
 				</Col>
 
@@ -78,7 +81,8 @@ const FormDangKi = (props: IProps) => {
 				</Col>
 			</Row>
 
-			<Form.Item style={{ textAlign: 'right', marginBottom: 0 }}>
+			<Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
+				<Button onClick={() => setIsModalVisible(false)}>Hủy</Button>
 				<Button type='primary' htmlType='submit' loading={loading} size='large'>
 					Gửi đơn đăng ký
 				</Button>
