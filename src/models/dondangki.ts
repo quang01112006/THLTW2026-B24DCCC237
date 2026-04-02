@@ -1,93 +1,144 @@
+import { EGioiTinh, ETrangThaiDonDangKi } from '@/services/CLB/constants';
+import type { CLB } from '@/services/CLB/typing';
 import { message } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';
 
 export default () => {
-	const [dsDon, setDsDon] = useState<QuanLyCLB.DonDangKy[]>(() => {
+	// --- MOCK DATA ---
+	const initDonDangKi: CLB.IDonDangKi[] = [
+		{
+			id: 'DON_001',
+			hoTen: 'Nguyễn Văn Mạnh',
+			email: 'manh.nv@student.ptit.edu.vn',
+			soDienThoai: '0912345678',
+			gioiTinh: EGioiTinh.NAM,
+			diaChi: 'Tokyo',
+			soTruong: 'Chơi Guitar acoustic, biết nhạc lý cơ bản, hát rock',
+			idCLB: 'CLB001',
+			lyDoDangKi:
+				'Em muốn tìm một môi trường năng động để rèn luyện kỹ năng biểu diễn và giao lưu với các bạn cùng đam mê.',
+			trangThai: ETrangThaiDonDangKi.PENDING,
+		},
+		{
+			id: 'DON_002',
+			hoTen: 'Trần Thu Hà',
+			email: 'ha.tt@student.ptit.edu.vn',
+			soDienThoai: '0988888777',
+			gioiTinh: EGioiTinh.NU,
+			diaChi: ' Hà Đông',
+			soTruong: 'Thuyết trình, lập kế hoạch sự kiện, làm nội dung TikTok',
+			idCLB: 'CLB002',
+			lyDoDangKi: 'Em muốn vượt qua nỗi sợ đứng trước đám đông và học cách quản lý thời gian hiệu quả hơn.',
+			trangThai: ETrangThaiDonDangKi.APPROVED,
+		},
+		{
+			id: 'DON_003',
+			hoTen: 'Lê Minh Đức',
+			email: 'duc.lm@student.ptit.edu.vn',
+			soDienThoai: '0355666777',
+			gioiTinh: EGioiTinh.NAM,
+			diaChi: 'Hà Nội',
+			soTruong: 'Lập trình C++, giải thuật, từng thi học sinh giỏi Tin học',
+			idCLB: 'CLB003',
+			lyDoDangKi:
+				'Mục tiêu của em là tìm kiếm đồng đội để cùng luyện tập cho kỳ thi Olympic Tin học sinh viên sắp tới.',
+			trangThai: ETrangThaiDonDangKi.REJECTED,
+			ghiChu: 'Kỹ năng chuyên môn chưa phù hợp với định hướng hiện tại của CLB.', // Thêm vào mock cho nó hiện icon luôn
+		},
+	];
+
+	const initLichSuThaoTac: CLB.ILichSuThaoTac[] = [
+		{
+			id: 'LOG_1',
+			idDon: 'DON_002',
+			thoiGian: '10:30 09/04/2026',
+			noiDung: 'Đã chấp nhận vào lúc 10:30 09/04/2026',
+			hanhDong: ETrangThaiDonDangKi.APPROVED,
+		},
+		{
+			id: 'LOG_2',
+			idDon: 'DON_003',
+			thoiGian: '11:15 09/04/2026',
+			noiDung:
+				'Đã từ chối vào lúc 11:15 09/04/2026 với lý do: Kỹ năng chuyên môn chưa phù hợp với định hướng hiện tại của CLB.',
+			hanhDong: ETrangThaiDonDangKi.REJECTED,
+		},
+	];
+
+	// --- STATE ---
+	const [dsDon, setDsDon] = useState<CLB.IDonDangKi[]>(() => {
 		const saved = localStorage.getItem('dsDon');
-		return saved
-			? JSON.parse(saved)
-			: [
-					{
-						id: 'don_1',
-						hoTen: 'Chu Văn D',
-						email: 'd@gmail.com',
-						soDienThoai: '0987654321',
-						gioiTinh: 'Nam',
-						diaChi: 'Hà Nội',
-						soTruong: 'Đánh đàn nhanh',
-						idCLB: 'clb_1',
-						lyDo: 'Em thích âm nhạc từ nhỏ.',
-						trangThai: 'Pending',
-					},
-			  ];
+		return saved ? JSON.parse(saved) : initDonDangKi;
 	});
 
-	const [dsLichSu, setDsLichSu] = useState<QuanLyCLB.LichSuThaoTac[]>(() => {
-		const saved = localStorage.getItem('dsLichSu');
-		return saved ? JSON.parse(saved) : [];
+	const [lsThaoTac, setLsThaoTac] = useState<CLB.ILichSuThaoTac[]>(() => {
+		const saved = localStorage.getItem('lsThaoTac');
+		return saved ? JSON.parse(saved) : initLichSuThaoTac;
 	});
 
-	const saveToLocal = (moi: QuanLyCLB.DonDangKy[], lsMoi: QuanLyCLB.LichSuThaoTac[]) => {
-		setDsDon(moi);
-		setDsLichSu(lsMoi);
-		localStorage.setItem('dsDon', JSON.stringify(moi));
-		localStorage.setItem('dsLichSu', JSON.stringify(lsMoi));
+	// --- SYNC ---
+	const saveAndSync = (data: CLB.IDonDangKi[]) => {
+		setDsDon(data);
+		localStorage.setItem('dsDon', JSON.stringify(data));
 	};
 
-	const xuLyDon = (ids: string[], status: 'Approved' | 'Rejected', lyDo?: string) => {
+	const saveLog = (newLogs: CLB.ILichSuThaoTac[]) => {
+		const updatedLogs = [...newLogs, ...lsThaoTac];
+		setLsThaoTac(updatedLogs);
+		localStorage.setItem('lsThaoTac', JSON.stringify(updatedLogs));
+	};
+
+	// --- METHODS ---
+	const addDon = (values: CLB.IDonDangKi) => {
+		const newDon = {
+			...values,
+			id: `DON_${Date.now()}`,
+			trangThai: ETrangThaiDonDangKi.PENDING,
+		};
+		saveAndSync([newDon, ...dsDon]);
+		message.success('Gửi đơn đăng ký thành công!');
+	};
+
+	const editDon = (id: string, values: Partial<CLB.IDonDangKi>) => {
+		const newData = dsDon.map((item) => (item.id === id ? { ...item, ...values } : item));
+		saveAndSync(newData);
+		message.success('Cập nhật thông tin đơn thành công');
+	};
+
+	const pheDuyetDon = (ids: string[], status: ETrangThaiDonDangKi, ghiChu?: string) => {
 		const thoiGian = moment().format('HH:mm DD/MM/YYYY');
-		const dsMoi = dsDon.map((don) => {
-			if (ids.includes(don.id)) {
+
+		// CHỖ NÀY QUAN TRỌNG: Phải update trường ghiChu vào Item
+		const newData = dsDon.map((item) => {
+			if (ids.includes(item.id)) {
 				return {
-					...don,
+					...item,
 					trangThai: status,
-					ghiChuAdmin: status === 'Rejected' ? lyDo : don.ghiChuAdmin,
+					ghiChu: ghiChu || item.ghiChu,
 				};
 			}
-			return don;
+			return item;
 		});
+		saveAndSync(newData);
 
-		const logsMoi: QuanLyCLB.LichSuThaoTac[] = ids.map((id) => ({
-			id: `log_${Date.now()}_${id}`,
+		const newLogs: CLB.ILichSuThaoTac[] = ids.map((id) => ({
+			id: `LOG_${Date.now()}_${id}`,
 			idDon: id,
-			nguoiThucHien: 'Admin',
-			hanhDong: status,
-			thoiGian: thoiGian,
-			noiDung: status === 'Approved' ? 'Đã duyệt tham gia CLB' : `Từ chối. Lý do: ${lyDo}`,
+			thoiGian,
+			noiDung: `Admin đã ${status} vào lúc ${thoiGian}${ghiChu ? `. Lý do: ${ghiChu}` : ''}`,
+			hanhDong: status as any,
 		}));
+		saveLog(newLogs);
 
-		saveToLocal(dsMoi, [...logsMoi, ...dsLichSu]);
-		message.success(`Đã xử lý ${ids.length} đơn!`);
-	};
-
-	const chuyenCLB = (ids: string[], newIdCLB: string) => {
-		const dsMoi = dsDon.map((don) => {
-			if (ids.includes(don.id)) {
-				return { ...don, idCLB: newIdCLB };
-			}
-			return don;
-		});
-
-		saveToLocal(dsMoi, dsLichSu);
-		message.success(`Đã chuyển ${ids.length} thành viên sang CLB mới!`);
-	};
-
-	const xoaDon = (id: string) => {
-		const dsMoi = dsDon.filter((don) => don.id !== id);
-
-		const lsMoi = dsLichSu.filter((ls) => ls.idDon !== id);
-
-		saveToLocal(dsMoi, lsMoi);
-		message.error('Đã xóa đơn đăng ký!');
+		message.success(`Đã cập nhật trạng thái cho ${ids.length} đơn`);
 	};
 
 	return {
 		dsDon,
-		setDsDon,
-		dsLichSu,
-		xuLyDon,
-		chuyenCLB,
-		xoaDon,
+		lsThaoTac,
+		addDon,
+		editDon,
+		pheDuyetDon,
 	};
 };

@@ -34,25 +34,25 @@
 		path: '/clb',
 		name: 'Quản lý Câu lạc bộ',
 		icon: 'team',
-		component: './CLB', // Trang danh sách CLB (Trang 1)
+		component: './CLB',
 	},
 	{
 		path: '/don-dang-ky',
 		name: 'Đơn đăng ký thành viên',
 		icon: 'file-text',
-		component: './QuanLyDon', // Trang duyệt đơn (Trang 2)
+		component: './QuanLyDon',
 	},
-	{
-		path: '/thanh-vien',
-		name: 'Danh sách thành viên',
-		icon: 'usergroup-add',
-		component: './ThanhVien', // Trang chỉ hiện Approved (Trang 3)
-	},
+	// {
+	// 	path: '/thanh-vien',
+	// 	name: 'Danh sách thành viên',
+	// 	icon: 'usergroup-add',
+	// 	component: './ThanhVien', // Trang chỉ hiện Approved (Trang 3)
+	// },
 	{
 		path: '/thong-ke',
 		name: 'Báo cáo & Thống kê',
 		icon: 'pie-chart',
-		component: './ThongKe', // Trang biểu đồ (Trang 4)
+		component: './ThongKe',
 	},
 
 	// DANH MUC HE THONG

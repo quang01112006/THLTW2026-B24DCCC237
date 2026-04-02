@@ -1,116 +1,120 @@
-import { CheckCircleOutlined, DeleteOutlined, EditOutlined, HistoryOutlined, PlusOutlined } from '@ant-design/icons';
+import { type IColumn } from '@/components/Table/typing';
+import { ETrangThaiDonDangKi } from '@/services/CLB/constants';
+import { type CLB } from '@/services/CLB/typing';
 import {
-	Button,
-	Card,
-	Col,
-	Form,
-	Input,
-	Modal,
-	Popconfirm,
-	Radio,
-	Row,
-	Select,
-	Space,
-	Table,
-	Tag,
-	Tooltip,
-} from 'antd';
+	CheckCircleOutlined,
+	CloseCircleOutlined,
+	HistoryOutlined,
+	MessageOutlined,
+	PlusOutlined,
+} from '@ant-design/icons';
+import { Button, Card, Drawer, Input, message, Modal, Popconfirm, Space, Table, Tag, Timeline, Tooltip } from 'antd';
 import { useState } from 'react';
 import { useModel } from 'umi';
+import FormDangKi from './components/Form';
 
 const QuanLyDon = () => {
-	const { xoaDon, dsDon, dsLichSu, xuLyDon, setDsDon } = useModel('dondangki');
+	const { dsDon, addDon, pheDuyetDon, lsThaoTac } = useModel('dondangki');
 	const { dsCLB } = useModel('clb');
 
-	const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-	const [isRejectModalVisible, setIsRejectModalVisible] = useState(false);
-	const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false);
-	const [isFormModalVisible, setIsFormModalVisible] = useState(false);
-	const [editingId, setEditingId] = useState<string | null>(null);
-	const [currentDonId, setCurrentDonId] = useState<string | null>(null);
+	const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+	const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+	const [isRejectModalVisible, setIsRejectModalVisible] = useState<boolean>(false);
+	const [isHistoryVisible, setIsHistoryVisible] = useState<boolean>(false);
 
-	const [form] = Form.useForm();
-	const [formSua] = Form.useForm();
+	const [rejectReason, setRejectReason] = useState<string>('');
+	const [pendingIds, setPendingIds] = useState<string[]>([]);
 
-	const showFormModal = (record?: QuanLyCLB.DonDangKy) => {
-		if (record) {
-			setEditingId(record.id);
-			formSua.setFieldsValue(record);
-		} else {
-			setEditingId(null);
-			formSua.resetFields();
-		}
-		setIsFormModalVisible(true);
+	const rowSelection = {
+		selectedRowKeys,
+		onChange: (keys: React.Key[]) => setSelectedRowKeys(keys),
+		getCheckboxProps: (record: CLB.IDonDangKi) => ({
+			disabled: record.trangThai !== ETrangThaiDonDangKi.PENDING,
+		}),
 	};
 
-	const handleSaveDon = async () => {
-		const values = await formSua.validateFields();
-		if (editingId) {
-			const moi = dsDon.map((d) => (d.id === editingId ? { ...d, ...values } : d));
-			setDsDon(moi);
-			localStorage.setItem('dsDon', JSON.stringify(moi));
-		} else {
-			const newDon = {
-				...values,
-				id: `don_${Date.now()}`,
-				trangThai: 'Pending',
-			};
-			const moi = [...dsDon, newDon];
-			setDsDon(moi);
-			localStorage.setItem('dsDon', JSON.stringify(moi));
-		}
-		setIsFormModalVisible(false);
+	const handleApprove = (ids: string[]) => {
+		pheDuyetDon(ids, ETrangThaiDonDangKi.APPROVED);
+		setSelectedRowKeys([]);
 	};
 
-	const pendingSelectedIds = dsDon
-		.filter((d) => selectedRowKeys.includes(d.id) && d.trangThai === 'Pending')
-		.map((d) => d.id);
+	const handleReject = () => {
+		if (!rejectReason.trim()) {
+			message.error('Bắt buộc nhập lý do từ chối');
+			return;
+		}
+		pheDuyetDon(pendingIds, ETrangThaiDonDangKi.REJECTED, rejectReason);
+		setIsRejectModalVisible(false);
+		setRejectReason('');
+		setSelectedRowKeys([]);
+	};
 
-	const columns = [
-		{ title: 'Họ tên', dataIndex: 'hoTen', align: 'center' as const },
+	const columns: IColumn<CLB.IDonDangKi>[] = [
+		{ title: 'STT', render: (_, __, idx) => idx + 1, align: 'center', width: 50, fixed: 'left' },
+		{ title: 'Tên', dataIndex: 'hoTen', width: 150, fixed: 'left' },
+		{ title: 'Giới tính', dataIndex: 'gioiTinh', width: 80, align: 'center' },
+		{ title: 'Email', dataIndex: 'email', width: 200 },
 		{
-			title: 'Câu lạc bộ',
+			title: 'CLB',
+			width: 150,
 			dataIndex: 'idCLB',
-			align: 'center' as const,
-			render: (id: string) => dsCLB.find((c: any) => c.id === id)?.tenCLB || 'N/A',
+			render: (val) => {
+				const clb = dsCLB.find((i) => i.id === val);
+				return <Tag color='blue'>{clb?.ten || val}</Tag>;
+			},
 		},
 		{
 			title: 'Trạng thái',
 			dataIndex: 'trangThai',
-			align: 'center' as const,
-			render: (status: string) => {
-				const colors = { Pending: 'orange', Approved: 'green', Rejected: 'red' };
-				return <Tag color={colors[status as keyof typeof colors]}>{status.toUpperCase()}</Tag>;
+			width: 120,
+			align: 'center',
+			render: (status: ETrangThaiDonDangKi) => {
+				const config = {
+					[ETrangThaiDonDangKi.PENDING]: { color: 'orange', text: 'Đang chờ' },
+					[ETrangThaiDonDangKi.APPROVED]: { color: 'green', text: 'Đã duyệt' },
+					[ETrangThaiDonDangKi.REJECTED]: { color: 'red', text: 'Đã từ chối' },
+				};
+				return <Tag color={config[status]?.color}>{config[status]?.text}</Tag>;
 			},
 		},
 		{
 			title: 'Thao tác',
-			align: 'center' as const,
-			render: (_: any, record: QuanLyCLB.DonDangKy) => (
-				<Space>
-					<Tooltip title='Lịch sử'>
-						<Button
-							type='text'
-							icon={<HistoryOutlined />}
-							onClick={() => {
-								setCurrentDonId(record.id);
-								setIsHistoryModalVisible(true);
-							}}
-						/>
-					</Tooltip>
-					<Tooltip title='Chỉnh sửa'>
-						<Button type='text' icon={<EditOutlined />} onClick={() => showFormModal(record)} />
-					</Tooltip>
-					<Popconfirm title='Xóa đơn này?' onConfirm={() => xoaDon(record.id)}>
-						<Button type='text' danger icon={<DeleteOutlined />} />
-					</Popconfirm>
-					{record.trangThai === 'Pending' && (
-						<Popconfirm title='Duyệt đơn này?' onConfirm={() => xuLyDon([record.id], 'Approved')}>
-							<Button type='link' icon={<CheckCircleOutlined />}>
-								Duyệt
-							</Button>
-						</Popconfirm>
-					)}
+			key: 'action',
+			align: 'center',
+			width: 120,
+			fixed: 'right',
+			render: (_, record) => (
+				<Space size='small'>
+					{record.trangThai === ETrangThaiDonDangKi.PENDING ? (
+						<>
+							<Popconfirm title='Duyệt đơn này?' onConfirm={() => handleApprove([record.id])}>
+								<Tooltip title='Duyệt'>
+									<Button type='text' shape='circle' style={{ color: '#52c41a' }} icon={<CheckCircleOutlined />} />
+								</Tooltip>
+							</Popconfirm>
+							<Tooltip title='Từ chối'>
+								<Button
+									type='text'
+									shape='circle'
+									danger
+									icon={<CloseCircleOutlined />}
+									onClick={() => {
+										setPendingIds([record.id]);
+										setIsRejectModalVisible(true);
+									}}
+								/>
+							</Tooltip>
+						</>
+					) : record.trangThai === ETrangThaiDonDangKi.REJECTED && record.ghiChu ? (
+						<Tooltip title={`Lý do từ chối: ${record.ghiChu}`}>
+							<Button
+								type='text'
+								shape='circle'
+								icon={<MessageOutlined />}
+								onClick={() => Modal.info({ title: 'Lý do từ chối', content: record.ghiChu })}
+							/>
+						</Tooltip>
+					) : null}
 				</Space>
 			),
 		},
@@ -118,139 +122,103 @@ const QuanLyDon = () => {
 
 	return (
 		<Card
-			title='Quản lý Đơn đăng ký'
+			title='Quản lý đơn đăng ký'
 			extra={
-				<Button type='primary' icon={<PlusOutlined />} onClick={() => showFormModal()}>
-					Thêm đơn mới
+				<Button icon={<HistoryOutlined />} onClick={() => setIsHistoryVisible(true)}>
+					Lịch sử thao tác
 				</Button>
 			}
 		>
 			<Space style={{ marginBottom: 16 }}>
-				<Button
-					type='primary'
-					disabled={pendingSelectedIds.length === 0}
-					onClick={() => {
-						xuLyDon(pendingSelectedIds, 'Approved');
-						setSelectedRowKeys([]);
-					}}
-				>
-					Duyệt {pendingSelectedIds.length} đơn
+				<Button icon={<PlusOutlined />} type='primary' onClick={() => setIsModalVisible(true)}>
+					Thêm Đơn Mới
 				</Button>
-				<Button danger disabled={pendingSelectedIds.length === 0} onClick={() => setIsRejectModalVisible(true)}>
-					Từ chối {pendingSelectedIds.length} đơn
-				</Button>
+				{selectedRowKeys.length > 0 && (
+					<Space>
+						<Button
+							type='primary'
+							ghost
+							icon={<CheckCircleOutlined />}
+							onClick={() => handleApprove(selectedRowKeys as string[])}
+						>
+							Duyệt {selectedRowKeys.length} đơn
+						</Button>
+						<Button
+							danger
+							ghost
+							icon={<CloseCircleOutlined />}
+							onClick={() => {
+								setPendingIds(selectedRowKeys as string[]);
+								setIsRejectModalVisible(true);
+							}}
+						>
+							Từ chối {selectedRowKeys.length} đơn
+						</Button>
+					</Space>
+				)}
 			</Space>
 
 			<Table
-				rowSelection={{
-					selectedRowKeys,
-					onChange: (keys) => setSelectedRowKeys(keys as string[]),
-					getCheckboxProps: (record: QuanLyCLB.DonDangKy) => ({
-						disabled: record.trangThai !== 'Pending',
-					}),
-				}}
-				columns={columns}
+				columns={columns as any}
 				dataSource={dsDon}
+				rowSelection={rowSelection}
 				rowKey='id'
+				scroll={{ x: 1600 }}
+				bordered
 			/>
 
 			<Modal
-				title={editingId ? 'Chỉnh sửa đơn' : 'Thêm đơn đăng ký mới'}
-				visible={isFormModalVisible}
-				onOk={handleSaveDon}
-				onCancel={() => setIsFormModalVisible(false)}
+				title='Thêm đơn mới'
+				visible={isModalVisible}
+				footer={null}
+				onCancel={() => setIsModalVisible(false)}
+				destroyOnClose
 				width={800}
 			>
-				<Form form={formSua} layout='vertical'>
-					<Row gutter={16}>
-						<Col span={12}>
-							<Form.Item name='hoTen' label='Họ và tên' rules={[{ required: true }]}>
-								<Input />
-							</Form.Item>
-						</Col>
-						<Col span={12}>
-							<Form.Item name='idCLB' label='Câu lạc bộ' rules={[{ required: true }]}>
-								<Select>
-									{dsCLB.map((c) => (
-										<Select.Option key={c.id} value={c.id}>
-											{c.tenCLB}
-										</Select.Option>
-									))}
-								</Select>
-							</Form.Item>
-						</Col>
-						<Col span={12}>
-							<Form.Item name='email' label='Email' rules={[{ type: 'email' }]}>
-								<Input />
-							</Form.Item>
-						</Col>
-						<Col span={12}>
-							<Form.Item name='soDienThoai' label='Số điện thoại'>
-								<Input />
-							</Form.Item>
-						</Col>
-						<Col span={12}>
-							<Form.Item name='gioiTinh' label='Giới tính' initialValue='Nam'>
-								<Radio.Group>
-									<Radio value='Nam'>Nam</Radio>
-									<Radio value='Nữ'>Nữ</Radio>
-								</Radio.Group>
-							</Form.Item>
-						</Col>
-						<Col span={12}>
-							<Form.Item name='diaChi' label='Địa chỉ'>
-								<Input />
-							</Form.Item>
-						</Col>
-						<Col span={24}>
-							<Form.Item name='lyDo' label='Lý do đăng ký'>
-								<Input.TextArea rows={3} />
-							</Form.Item>
-						</Col>
-					</Row>
-				</Form>
+				<FormDangKi
+					dsCLB={dsCLB}
+					onSave={(v) => {
+						addDon(v);
+						setIsModalVisible(false);
+					}}
+				/>
 			</Modal>
 
 			<Modal
 				title='Lý do từ chối'
 				visible={isRejectModalVisible}
-				onOk={async () => {
-					const { lyDo } = await form.validateFields();
-					xuLyDon(pendingSelectedIds, 'Rejected', lyDo);
-					setIsRejectModalVisible(false);
-					setSelectedRowKeys([]);
-					form.resetFields();
-				}}
+				onOk={handleReject}
 				onCancel={() => setIsRejectModalVisible(false)}
+				okText='Xác nhận'
+				okButtonProps={{ danger: true }}
+				destroyOnClose
 			>
-				<Form form={form} layout='vertical'>
-					<Form.Item name='lyDo' label='Nhập lý do từ chối' rules={[{ required: true }]}>
-						<Input.TextArea rows={4} />
-					</Form.Item>
-				</Form>
-			</Modal>
-
-			<Modal
-				title='Lịch sử thao tác'
-				visible={isHistoryModalVisible}
-				onCancel={() => setIsHistoryModalVisible(false)}
-				footer={null}
-				width={800}
-			>
-				<Table
-					dataSource={dsLichSu.filter((ls) => ls.idDon === currentDonId)}
-					rowKey='id'
-					columns={[
-						{ title: 'Thời gian', dataIndex: 'thoiGian' },
-						{
-							title: 'Hành động',
-							dataIndex: 'hanhDong',
-							render: (h) => <Tag color={h === 'Approved' ? 'green' : 'red'}>{h}</Tag>,
-						},
-						{ title: 'Nội dung', dataIndex: 'noiDung' },
-					]}
+				<Input.TextArea
+					rows={4}
+					placeholder='Nhập lý do từ chối...'
+					value={rejectReason}
+					onChange={(e) => setRejectReason(e.target.value)}
 				/>
 			</Modal>
+
+			<Drawer
+				title='Lịch sử thao tác hệ thống'
+				width={500}
+				onClose={() => setIsHistoryVisible(false)}
+				visible={isHistoryVisible}
+			>
+				<Timeline mode='left'>
+					{lsThaoTac.map((log) => (
+						<Timeline.Item
+							key={log.id}
+							color={log.hanhDong === ETrangThaiDonDangKi.APPROVED ? 'green' : 'red'}
+							label={log.thoiGian}
+						>
+							{log.noiDung}
+						</Timeline.Item>
+					))}
+				</Timeline>
+			</Drawer>
 		</Card>
 	);
 };
