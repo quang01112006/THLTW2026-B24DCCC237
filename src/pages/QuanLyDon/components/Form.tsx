@@ -1,7 +1,7 @@
 import { EGioiTinh } from '@/services/CLB/constants';
 import type { CLB } from '@/services/CLB/typing';
 import rules from '@/utils/rules';
-import { Button, Col, Form, Input, Radio, Row, Select } from 'antd';
+import { Button, Col, Form, Input, Radio, Row, Select, Space } from 'antd';
 
 interface IProps {
 	dsCLB: CLB.IRecord[];
@@ -82,10 +82,12 @@ const FormDangKi = (props: IProps) => {
 			</Row>
 
 			<Form.Item style={{ textAlign: 'center', marginBottom: 0 }}>
-				<Button onClick={() => setIsModalVisible(false)}>Hủy</Button>
-				<Button type='primary' htmlType='submit' loading={loading} size='large'>
-					Gửi đơn đăng ký
-				</Button>
+				<Space>
+					<Button onClick={() => setIsModalVisible(false)}>Hủy</Button>
+					<Button type='primary' htmlType='submit' loading={loading}>
+						Gửi đơn đăng ký
+					</Button>
+				</Space>
 			</Form.Item>
 		</Form>
 	);

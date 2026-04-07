@@ -30,29 +30,53 @@
 		component: './TienIch/GioiThieu',
 		hideInMenu: true,
 	},
-	{
-		path: '/clb',
-		name: 'Quản lý Câu lạc bộ',
-		icon: 'team',
-		component: './CLB',
-	},
-	{
-		path: '/don-dang-ky',
-		name: 'Đơn đăng ký thành viên',
-		icon: 'file-text',
-		component: './QuanLyDon',
-	},
+	// {
+	// 	path: '/clb',
+	// 	name: 'Quản lý Câu lạc bộ',
+	// 	icon: 'team',
+	// 	component: './CLB',
+	// },
+	// {
+	// 	path: '/don-dang-ky',
+	// 	name: 'Đơn đăng ký thành viên',
+	// 	icon: 'file-text',
+	// 	component: './QuanLyDon',
+	// },
 	// {
 	// 	path: '/thanh-vien',
 	// 	name: 'Danh sách thành viên',
 	// 	icon: 'usergroup-add',
 	// 	component: './ThanhVien', // Trang chỉ hiện Approved (Trang 3)
 	// },
+	// {
+	// 	path: '/thong-ke',
+	// 	name: 'Báo cáo & Thống kê',
+	// 	icon: 'pie-chart',
+	// 	component: './ThongKe',
+	// },
 	{
-		path: '/thong-ke',
-		name: 'Báo cáo & Thống kê',
-		icon: 'pie-chart',
-		component: './ThongKe',
+		path: '/du-lich',
+		name: 'Quản lý du lịch',
+		icon: 'SettingOutlined',
+		component: './QuanLyDuLich',
+	},
+	{
+		path: '/kham-pha',
+		name: 'Khám phá điểm đến',
+		icon: 'CompassOutlined',
+		component: './KhamPha',
+	},
+	{
+		path: '/lich-trinh',
+		name: 'Lịch trình của tôi',
+		icon: 'ScheduleOutlined',
+		component: './LichTrinh',
+	},
+	{
+		path: '/lich-trinh/:id',
+		name: 'Chi tiết lịch trình',
+		hideInMenu: true,
+		component: './LichTrinh/ChiTiet',
 	},
 
 	// DANH MUC HE THONG
