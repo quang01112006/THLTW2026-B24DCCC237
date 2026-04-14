@@ -22,6 +22,11 @@ export default () => {
 			moTa: 'Học cách tạo ra giao diện người dùng.',
 		},
 	];
+	const [dsGiangVien] = useState([
+		{ value: 'GV_TuanAnh', label: 'Tuấn Anh' },
+		{ value: 'GV_PhuongLinh', label: 'Phương Linh' },
+		{ value: 'GV_MinhDuc', label: 'Minh Đức' },
+	]);
 	const [dsKhoaHoc, setDsKhoaHoc] = useState<QuanLyKhoaHoc.IKhoaHoc[]>(() => {
 		const saved = localStorage.getItem('dsKhoaHoc');
 		return saved ? JSON.parse(saved) : MOCK_KHOA_HOC;
@@ -70,5 +75,6 @@ export default () => {
 		addKhoaHoc,
 		updateKhoaHoc,
 		deleteKhoaHoc,
+		dsGiangVien,
 	};
 };

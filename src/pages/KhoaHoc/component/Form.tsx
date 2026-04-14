@@ -4,6 +4,7 @@ import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Radio, Select, Space } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import { useEffect } from 'react';
+import { useModel } from 'umi';
 interface Props {
 	onFinish: (values: any) => void;
 	onCancel: () => void;
@@ -11,6 +12,7 @@ interface Props {
 }
 const FormKhoaHoc = (props: Props) => {
 	const { onFinish, onCancel, initialValues } = props;
+	const { dsGiangVien } = useModel('khoahoc');
 	const [form] = Form.useForm();
 	useEffect(() => {
 		if (initialValues) {
@@ -19,10 +21,7 @@ const FormKhoaHoc = (props: Props) => {
 			form.resetFields();
 		}
 	}, [initialValues, form]);
-	const dsGiangVien = [
-		{ value: 'GV_TuanAnh', label: 'Tuấn Anh' },
-		{ value: 'GV_PhuongLinh', label: 'Phương Linh' },
-	];
+
 	return (
 		<Form form={form} layout='vertical' onFinish={onFinish} initialValues={{ soLuongHocVien: 0, trangThai: 'DANG_MO' }}>
 			<Form.Item name='ten' label='Tên khóa học' rules={[...rules.required, ...rules.length(100)]}>
