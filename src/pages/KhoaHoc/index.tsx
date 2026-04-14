@@ -1,8 +1,8 @@
 import { type IColumn } from '@/components/Table/typing';
 import { ETrangThai, LECTURER_MAP, STATUS_MAP } from '@/services/QuanLyKhoaHoc/constants';
 import { type QuanLyKhoaHoc } from '@/services/QuanLyKhoaHoc/typing';
-import { DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Input, Modal, Popconfirm, Row, Space, Table, Tag, Tooltip } from 'antd';
+import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
+import { Button, Card, Descriptions, Divider, Input, Modal, Popconfirm, Space, Table, Tag, Tooltip } from 'antd';
 import { useState } from 'react';
 import { useModel } from 'umi';
 import FormKhoaHoc from './component/Form';
@@ -12,6 +12,12 @@ const KhoaHocPage = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [editingRecord, setEditingRecord] = useState<QuanLyKhoaHoc.IKhoaHoc | null>(null);
 	const [searchText, setSearchText] = useState('');
+	const [isViewModalVisible, setIsViewModalVisible] = useState(false);
+	const [viewData, setViewData] = useState<QuanLyKhoaHoc.IKhoaHoc | null>(null);
+	const showViewModal = (record: QuanLyKhoaHoc.IKhoaHoc) => {
+		setViewData(record);
+		setIsViewModalVisible(true);
+	};
 
 	const showModal = (record?: QuanLyKhoaHoc.IKhoaHoc) => {
 		setEditingRecord(record || null);
@@ -87,8 +93,11 @@ const KhoaHocPage = () => {
 			align: 'center',
 			render: (_: any, record: any) => (
 				<Space>
+					<Tooltip title='Xem mô tả'>
+						<Button icon={<EyeOutlined />} type='link' onClick={() => showViewModal(record)} />
+					</Tooltip>
 					<Tooltip title='Chỉnh sửa khóa học'>
-						<Button icon={<EditOutlined />} onClick={() => showModal(record)} />
+						<Button icon={<EditOutlined />} type='link' onClick={() => showModal(record)} />
 					</Tooltip>
 
 					<Popconfirm
@@ -96,12 +105,10 @@ const KhoaHocPage = () => {
 						onConfirm={() => {
 							deleteKhoaHoc(record.id);
 						}}
-						okText='Xóa'
-						cancelText='Hủy'
 						disabled={record.soLuongHocVien > 0}
 					>
 						<Tooltip title='Xóa khóa học'>
-							<Button danger icon={<DeleteOutlined />} disabled={record.soLuongHocVien > 0} />
+							<Button type='primary' icon={<DeleteOutlined />} disabled={record.soLuongHocVien > 0} />
 						</Tooltip>
 					</Popconfirm>
 				</Space>
@@ -111,21 +118,20 @@ const KhoaHocPage = () => {
 	const filteredData = dsKhoaHoc.filter((item) => item.ten.toLowerCase().includes(searchText.toLowerCase()));
 	return (
 		<Card title='Quản lý khóa học'>
-			<Row gutter={16} style={{ marginBottom: 16 }} align='middle'>
-				<Col span={12}>
-					<Input
-						placeholder='Tìm kiếm theo tên khóa học...'
-						prefix={<SearchOutlined />}
-						allowClear
-						onChange={(e) => setSearchText(e.target.value)}
-					/>
-				</Col>
-				<Col span={12} style={{ textAlign: 'right' }}>
-					<Button type='primary' icon={<PlusOutlined />} onClick={() => showModal()}>
-						Thêm khóa học
-					</Button>
-				</Col>
-			</Row>
+			<Space>
+				<Button type='primary' icon={<PlusOutlined />} onClick={() => showModal()}>
+					Thêm khóa học
+				</Button>
+
+				<Input.Search
+					placeholder='Tìm kiếm theo tên khóa học...'
+					allowClear
+					onSearch={(value) => setSearchText(value)}
+					onChange={(e) => setSearchText(e.target.value)}
+					style={{ width: 400 }}
+					enterButton={<Button icon={<SearchOutlined style={{ color: 'red' }} />} />}
+				/>
+			</Space>
 			<Table columns={columns} dataSource={filteredData} />
 			<Modal
 				title={editingRecord ? 'Chỉnh sửa khóa học' : 'Thêm mới khóa học'}
@@ -135,6 +141,41 @@ const KhoaHocPage = () => {
 				destroyOnClose
 			>
 				<FormKhoaHoc initialValues={editingRecord} onCancel={handleCancel} onFinish={onFinish} />
+			</Modal>
+			<Modal
+				title='Chi tiết khóa học'
+				visible={isViewModalVisible}
+				onCancel={() => setIsViewModalVisible(false)}
+				footer={[
+					<Button key='close' onClick={() => setIsViewModalVisible(false)}>
+						Đóng
+					</Button>,
+				]}
+				width={600}
+			>
+				{viewData && (
+					<>
+						<Descriptions bordered column={1} size='small'>
+							<Descriptions.Item label='Tên khóa học'>{viewData.ten}</Descriptions.Item>
+							<Descriptions.Item label='Giảng viên'>
+								{LECTURER_MAP[viewData.giangVien as keyof typeof LECTURER_MAP] || viewData.giangVien}
+							</Descriptions.Item>
+							<Descriptions.Item label='Số lượng'>{viewData.soLuongHocVien} học viên</Descriptions.Item>
+							<Descriptions.Item label='Trạng thái'>
+								<Tag color={STATUS_MAP[viewData.trangThai as keyof typeof STATUS_MAP]?.color}>{viewData.trangThai}</Tag>
+							</Descriptions.Item>
+						</Descriptions>
+
+						<Divider orientation='left'>Mô tả</Divider>
+
+						<div
+							style={{ marginTop: 10 }}
+							dangerouslySetInnerHTML={{
+								__html: viewData?.moTa || '<i>Chưa có mô tả.</i>',
+							}}
+						/>
+					</>
+				)}
 			</Modal>
 		</Card>
 	);

@@ -6,15 +6,15 @@ import { useState } from 'react';
 export default () => {
 	const MOCK_KHOA_HOC: QuanLyKhoaHoc.IKhoaHoc[] = [
 		{
-			id: 'KH001',
+			id: 'KH1',
 			ten: 'Lập trình ReactJS cơ bản',
 			giangVien: 'GV_TuanAnh',
 			soLuongHocVien: 25,
 			trangThai: ETrangThai.DANG_MO,
-			moTa: 'Khóa học dành cho người mới bắt đầu với React.',
+			moTa: 'Khóa học <b>cực hay</b> dành cho <i>người mới</i>.<ul><li>Tặng giáo trình</li><li>Hỗ trợ 24/7</li></ul>',
 		},
 		{
-			id: 'KH002',
+			id: 'KH2',
 			ten: 'Thiết kế UI/UX nâng cao',
 			giangVien: 'GV_PhuongLinh',
 			soLuongHocVien: 0,
@@ -36,10 +36,11 @@ export default () => {
 		const isDuplicate = dsKhoaHoc.some((item) => item.ten.toLowerCase() === values.ten.toLowerCase());
 		if (isDuplicate) {
 			message.error('Tên khóa học này đã tồn tại!');
+			return;
 		}
-		const newData = [...dsKhoaHoc, { ...values, id: `KH_${Date.now()}` }];
-		message.success('Thêm khóa học mới thành công!');
+		const newData = [...dsKhoaHoc, { ...values, id: `KH${dsKhoaHoc.length + 1}` }];
 		saveAndSync(newData);
+		message.success('Thêm khóa học mới thành công!');
 	};
 
 	const updateKhoaHoc = (id: string, values: Partial<QuanLyKhoaHoc.IKhoaHoc>) => {
@@ -50,15 +51,18 @@ export default () => {
 			return item;
 		});
 		saveAndSync(newData);
+		message.success('Đã cập nhật thông tin khóa học!');
 	};
 
 	const deleteKhoaHoc = (id: string) => {
 		const deleted = dsKhoaHoc.find((item) => item.id === id);
 		if (deleted && deleted.soLuongHocVien > 0) {
 			message.error('Không thể xóa khóa học đang có học viên!');
+			return;
 		}
 		const newData = dsKhoaHoc.filter((item) => item.id !== id);
 		saveAndSync(newData);
+		message.success('Đã xóa khóa học thành công!');
 	};
 
 	return {
