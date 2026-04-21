@@ -25,17 +25,44 @@
 		icon: 'HomeOutlined',
 	},
 	{
+		path: '/Home',
+		name: 'Trang chủ',
+		icon: 'HomeOutlined',
+		component: './Blog/TrangChu',
+	},
+	{
 		path: '/gioi-thieu',
 		name: 'About',
 		component: './TienIch/GioiThieu',
 		hideInMenu: true,
 	},
 	{
-		path: '/khoa-hoc',
-		name: 'Quản lý khóa học',
-		component: './KhoaHoc',
+		path: '/post/:slug',
+		name: 'Chi tiết bài viết',
+		component: './Blog/ChiTiet',
+		hideInMenu: true,
 	},
 
+	{
+		path: '/about',
+		name: 'Giới thiệu',
+		icon: 'UserOutlined',
+		component: './Blog/AuthorAbout',
+	},
+
+	{
+		path: '/quan-ly-bai-viet',
+		name: 'Quản lý bài viết',
+		icon: 'FileTextOutlined',
+		component: './BlogAdmin/PostManager',
+	},
+
+	{
+		path: '/quan-ly-the',
+		name: 'Quản lý thẻ',
+		icon: 'TagsOutlined',
+		component: './BlogAdmin/TagManager',
+	},
 	{
 		path: '/notification',
 		routes: [
