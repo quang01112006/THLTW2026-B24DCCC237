@@ -18,50 +18,43 @@
 
 	///////////////////////////////////
 	// DEFAULT MENU
+	// {
+	// 	path: '/dashboard',
+	// 	name: 'Dashboard',
+	// 	component: './TrangChu',
+	// 	icon: 'HomeOutlined',
+	// },
 	{
-		path: '/dashboard',
-		name: 'Dashboard',
-		component: './TrangChu',
-		icon: 'HomeOutlined',
-	},
-	{
-		path: '/Home',
-		name: 'Trang chủ',
-		icon: 'HomeOutlined',
-		component: './Blog/TrangChu',
-	},
-	{
-		path: '/gioi-thieu',
-		name: 'About',
-		component: './TienIch/GioiThieu',
-		hideInMenu: true,
-	},
-	{
-		path: '/post/:slug',
-		name: 'Chi tiết bài viết',
-		component: './Blog/ChiTiet',
-		hideInMenu: true,
-	},
-
-	{
-		path: '/about',
-		name: 'Giới thiệu',
-		icon: 'UserOutlined',
-		component: './Blog/AuthorAbout',
-	},
-
-	{
-		path: '/quan-ly-bai-viet',
-		name: 'Quản lý bài viết',
-		icon: 'FileTextOutlined',
-		component: './BlogAdmin/PostManager',
-	},
-
-	{
-		path: '/quan-ly-the',
-		name: 'Quản lý thẻ',
-		icon: 'TagsOutlined',
-		component: './BlogAdmin/TagManager',
+		path: '/health',
+		name: 'Theo dõi sức khỏe',
+		icon: 'HeartOutlined',
+		routes: [
+			{
+				path: '/health/home',
+				name: 'Trang chủ',
+				component: './Health/TrangChu',
+			},
+			{
+				path: '/health/nhat-ki-tap-luyen',
+				name: 'Nhật kí tập luyện',
+				component: './Health/NhatKiTapLuyen',
+			},
+			{
+				path: '/health/chi-so-suc-khoe',
+				name: 'Nhật kí chỉ số sức khỏe',
+				component: './Health/ChiSoSucKhoe',
+			},
+			{
+				path: '/health/quan-ly-muc-tieu',
+				name: 'Quản lý mục tiêu',
+				component: './Health/QuanLyMucTieu',
+			},
+			{
+				path: '/health/thu-vien-bai-tap',
+				name: 'Thư viện bài tập',
+				component: './Health/ThuVienBaiTap',
+			},
+		],
 	},
 	{
 		path: '/notification',
