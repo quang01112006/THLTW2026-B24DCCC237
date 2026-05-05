@@ -1,4 +1,4 @@
-﻿export default [
+export default [
 	{
 		path: '/user',
 		layout: false,
@@ -24,35 +24,57 @@
 	// 	component: './TrangChu',
 	// 	icon: 'HomeOutlined',
 	// },
+	// {
+	// 	path: '/health',
+	// 	name: 'Theo dõi sức khỏe',
+	// 	icon: 'HeartOutlined',
+	// 	routes: [
+	// 		{
+	// 			path: '/health/home',
+	// 			name: 'Trang chủ',
+	// 			component: './Health/TrangChu',
+	// 		},
+	// 		{
+	// 			path: '/health/nhat-ki-tap-luyen',
+	// 			name: 'Nhật kí tập luyện',
+	// 			component: './Health/NhatKiTapLuyen',
+	// 		},
+	// 		{
+	// 			path: '/health/chi-so-suc-khoe',
+	// 			name: 'Nhật kí chỉ số sức khỏe',
+	// 			component: './Health/ChiSoSucKhoe',
+	// 		},
+	// 		{
+	// 			path: '/health/quan-ly-muc-tieu',
+	// 			name: 'Quản lý mục tiêu',
+	// 			component: './Health/QuanLyMucTieu',
+	// 		},
+	// 		{
+	// 			path: '/health/thu-vien-bai-tap',
+	// 			name: 'Thư viện bài tập',
+	// 			component: './Health/ThuVienBaiTap',
+	// 		},
+	// 	],
+	// },
 	{
-		path: '/health',
-		name: 'Theo dõi sức khỏe',
-		icon: 'HeartOutlined',
+		path: '/task',
+		name: 'Quản lý công việc',
+		icon: 'ProjectOutlined',
 		routes: [
 			{
-				path: '/health/home',
-				name: 'Trang chủ',
-				component: './Health/TrangChu',
+				path: '/task/dashboard',
+				name: 'Dashboard',
+				component: './Task/Dashboard',
 			},
 			{
-				path: '/health/nhat-ki-tap-luyen',
-				name: 'Nhật kí tập luyện',
-				component: './Health/NhatKiTapLuyen',
+				path: '/task/kanban',
+				name: 'Kanban Board',
+				component: './Task/Kanban',
 			},
 			{
-				path: '/health/chi-so-suc-khoe',
-				name: 'Nhật kí chỉ số sức khỏe',
-				component: './Health/ChiSoSucKhoe',
-			},
-			{
-				path: '/health/quan-ly-muc-tieu',
-				name: 'Quản lý mục tiêu',
-				component: './Health/QuanLyMucTieu',
-			},
-			{
-				path: '/health/thu-vien-bai-tap',
-				name: 'Thư viện bài tập',
-				component: './Health/ThuVienBaiTap',
+				path: '/task/list',
+				name: 'Danh sách task',
+				component: './Task/List',
 			},
 		],
 	},
